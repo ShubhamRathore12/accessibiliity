@@ -1,0 +1,57 @@
+export interface A11ySettings {
+    fontSize: number;             // -50 to 100 (%)
+    lineHeight: number;           // -50 to 100 (%)
+    letterSpacing: number;        // -50 to 100 (%)
+    fontColor: string;            // hex
+    textCase: "initial" | "uppercase" | "lowercase";
+    bold: boolean;
+    italic: boolean;
+    textAlign: "left" | "center" | "right";
+    titleColor: string;           // hex
+    titleBackgroundColor: string; // hex
+    highlightTitles: boolean;
+    highlightLinks: boolean;
+    hideImages: boolean;
+    monochrome: boolean;
+    highContrast: boolean;
+    lowContrast: boolean;
+}
+
+export interface A11yColorProps {
+    /** Primary accent color (hex). Controls buttons, active states, labels. Default: "#2e7d32" */
+    accentColor?: string;
+    /** CSS gradient string for the panel header. Default: green gradient */
+    headerGradient?: string;
+    /** CSS gradient string for the Done button. Default: green gradient */
+    doneButtonGradient?: string;
+    /** CSS gradient string for Done button hover state */
+    doneButtonHoverGradient?: string;
+    /** Color for the Reset button text & border. Default: "#e53935" */
+    resetColor?: string;
+    /** Background color of the icon circle in the header. Default: "rgba(255,255,255,0.18)" */
+    iconBgColor?: string;
+}
+
+export interface A11yPanelProps extends A11yColorProps {
+    /** Storage key for localStorage. Default: "a11y-settings" */
+    storageKey?: string;
+    /**
+     * Bottom offset of the FAB (px number or CSS string).
+     * Used to position the panel above the button. Default: 28
+     */
+    fabBottom?: string | number;
+    /**
+     * Right offset of the FAB (px number or CSS string).
+     * Panel aligns to this same right edge. Default: 28
+     */
+    fabRight?: string | number;
+}
+
+export interface A11yButtonProps extends A11yColorProps {
+    /** Bottom offset of the FAB button. Default: 28 */
+    bottom?: string | number;
+    /** Right offset of the FAB button. Default: 28 */
+    right?: string | number;
+    /** Storage key passed to the panel. Default: "a11y-settings" */
+    storageKey?: string;
+}
