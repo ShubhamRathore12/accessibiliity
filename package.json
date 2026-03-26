@@ -1,6 +1,6 @@
 {
   "name": "frontend-a11y-panel",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "description": "A modern, animated, mobile-responsive accessibility settings panel for React apps",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

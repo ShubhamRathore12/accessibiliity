@@ -270,8 +270,9 @@ export const AccessibilityPanel: FC<A11yPanelProps & { open: boolean; onClose: (
     open,
     onClose,
     storageKey = "a11y-settings",
-    fabBottom = 28,
-    fabRight = 28,
+    fabOffset = 28,
+    fabSideOffset = 28,
+    position = "bottom-right",
     accentColor,
     headerGradient,
     doneButtonGradient,
@@ -306,13 +307,18 @@ export const AccessibilityPanel: FC<A11yPanelProps & { open: boolean; onClose: (
         if (!bd || !pn) return;
 
         const isMobile = window.innerWidth < 600;
+        const isLeft = position.includes("left");
+        const isTop  = position.includes("top");
+        // Desktop: slide from the side the panel is on; Mobile: always slide from bottom
+        const slideX = isLeft ? "-110%" : "110%";
+        const slideY = isTop  ? "-100%" : "100%";
 
         if (open) {
             bd.classList.add("ra11y-visible");
             gsap.set(bd, { opacity: 0 });
             gsap.set(pn, {
                 opacity: 0,
-                ...(isMobile ? { y: "100%", x: 0 } : { x: "110%", y: 0 }),
+                ...(isMobile ? { y: "100%", x: 0 } : { x: slideX, y: 0 }),
             });
             gsap.to(bd, { opacity: 1, duration: 0.22, ease: "power1.out" });
             gsap.to(pn, {
@@ -327,13 +333,13 @@ export const AccessibilityPanel: FC<A11yPanelProps & { open: boolean; onClose: (
             gsap.to(bd, { opacity: 0, duration: 0.18, ease: "power1.in", onComplete: () => bd.classList.remove("ra11y-visible") });
             gsap.to(pn, {
                 opacity: 0,
-                ...(exitMobile ? { y: "100%" } : { x: "110%" }),
+                ...(exitMobile ? { y: "100%" } : { x: slideX }),
                 duration: 0.28,
                 ease: "power3.in",
                 onComplete: () => setMounted(false),
             });
         }
-    }, [open, mounted]);
+    }, [open, mounted, position]);
 
     const animateItems = () => {
         if (!contentRef.current) return;
@@ -372,9 +378,11 @@ export const AccessibilityPanel: FC<A11yPanelProps & { open: boolean; onClose: (
 
     if (!isClient || !mounted) return null;
 
-    // ── Desktop panel position: sits above the FAB ──
-    const fabOffsetNum = typeof fabBottom === "number" ? fabBottom : parseInt(fabBottom as string, 10) || 28;
-    const fabSideNum   = typeof fabRight  === "number" ? fabRight  : parseInt(fabRight  as string, 10) || 28;
+    // ── Desktop panel position: sits next to the FAB based on position prop ──
+    const fabOffsetNum = typeof fabOffset === "number" ? fabOffset : parseInt(fabOffset as string, 10) || 28;
+    const fabSideNum   = typeof fabSideOffset === "number" ? fabSideOffset : parseInt(fabSideOffset as string, 10) || 28;
+    const isLeft  = position.includes("left");
+    const isTop   = position.includes("top");
     const panelGap = fabOffsetNum + 52 + 12; // FAB height 52 + gap 12
 
     // CSS custom-property overrides injected inline on the panel element
@@ -400,8 +408,8 @@ export const AccessibilityPanel: FC<A11yPanelProps & { open: boolean; onClose: (
                 aria-label="Accessibility Settings"
                 aria-modal="true"
                 style={{
-                    bottom: panelGap,
-                    right: fabSideNum,
+                    ...(isTop  ? { top: panelGap }    : { bottom: panelGap }),
+                    ...(isLeft ? { left: fabSideNum }  : { right: fabSideNum }),
                     ...(cssVars as React.CSSProperties),
                 }}
             >

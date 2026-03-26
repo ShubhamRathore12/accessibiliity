@@ -17,6 +17,8 @@ export interface A11ySettings {
     lowContrast: boolean;
 }
 
+export type A11yPosition = "bottom-right" | "bottom-left" | "top-right" | "top-left";
+
 export interface A11yColorProps {
     /** Primary accent color (hex). Controls buttons, active states, labels. Default: "#2e7d32" */
     accentColor?: string;
@@ -35,23 +37,21 @@ export interface A11yColorProps {
 export interface A11yPanelProps extends A11yColorProps {
     /** Storage key for localStorage. Default: "a11y-settings" */
     storageKey?: string;
-    /**
-     * Bottom offset of the FAB (px number or CSS string).
-     * Used to position the panel above the button. Default: 28
-     */
-    fabBottom?: string | number;
-    /**
-     * Right offset of the FAB (px number or CSS string).
-     * Panel aligns to this same right edge. Default: 28
-     */
-    fabRight?: string | number;
+    /** Offset of the FAB from the edge (px). Default: 28 */
+    fabOffset?: string | number;
+    /** Side offset of the FAB from the edge (px). Default: 28 */
+    fabSideOffset?: string | number;
+    /** Position of the FAB and panel. Default: "bottom-right" */
+    position?: A11yPosition;
 }
 
 export interface A11yButtonProps extends A11yColorProps {
-    /** Bottom offset of the FAB button. Default: 28 */
+    /** Offset from the edge (px). Default: 28 */
     bottom?: string | number;
-    /** Right offset of the FAB button. Default: 28 */
+    /** Side offset from the edge (px). Default: 28 */
     right?: string | number;
+    /** Position of the FAB button on screen. Default: "bottom-right" */
+    position?: A11yPosition;
     /** Storage key passed to the panel. Default: "a11y-settings" */
     storageKey?: string;
 }

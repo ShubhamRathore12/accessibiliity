@@ -46,6 +46,7 @@ const SvgA11y: FC = () => (
 export const AccessibilityButton: FC<A11yButtonProps> = ({
     bottom = 28,
     right = 28,
+    position = "bottom-right",
     storageKey = "a11y-settings",
     accentColor,
     headerGradient,
@@ -78,9 +79,16 @@ export const AccessibilityButton: FC<A11yButtonProps> = ({
 
     if (!isClient) return null;
 
+    // Position the FAB based on the position prop
+    const offsetNum = typeof bottom === "number" ? bottom : parseInt(bottom as string, 10) || 28;
+    const sideNum   = typeof right  === "number" ? right  : parseInt(right  as string, 10) || 28;
+
+    const fabPos: React.CSSProperties = {};
+    if (position.includes("bottom")) fabPos.bottom = offsetNum; else fabPos.top = offsetNum;
+    if (position.includes("right"))  fabPos.right  = sideNum;  else fabPos.left = sideNum;
+
     const fabStyle: React.CSSProperties = {
-        bottom,
-        right,
+        ...fabPos,
         ...(accentColor ? {
             "--ra11y-fab-bg": accentColor,
             "--ra11y-fab-shadow": accentColor + "73",
@@ -104,8 +112,9 @@ export const AccessibilityButton: FC<A11yButtonProps> = ({
                 open={open}
                 onClose={() => setOpen(false)}
                 storageKey={storageKey}
-                fabBottom={bottom}
-                fabRight={right}
+                fabOffset={bottom}
+                fabSideOffset={right}
+                position={position}
                 accentColor={accentColor}
                 headerGradient={headerGradient}
                 doneButtonGradient={doneButtonGradient}
